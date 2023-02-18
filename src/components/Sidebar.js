@@ -1,6 +1,6 @@
 import Sidebarlink from "./Sidebarlink";
 // Import Hero Icons
-import { HiAcademicCap, HiHome, HiUser,HiArchive, HiTable, HiKey, HiCog, HiBell, HiOutlineBell } from "react-icons/hi";
+import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin } from "react-icons/hi";
 
 export default function Sidebar() {
     return (
@@ -9,15 +9,15 @@ export default function Sidebar() {
             <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
                 <Sidebarlink text="Home" Icon={HiHome} active= {true} />
                 <br />
-                <Sidebarlink text="Notifications" Icon={HiBell} active= {false} />
+                <Sidebarlink text="Profile" Icon={HiUser}/>
                 <br />
-                <Sidebarlink text="Profile" Icon={HiUser} active= {false}  />
+                <Sidebarlink text="Alerts" Icon={HiBell} />
                 <br />
-                <Sidebarlink text="API" Icon={HiKey} active= {false}  />
+                <Sidebarlink text="API" Icon={HiKey} />
                 <br />
-                <Sidebarlink text="Ledger" Icon={HiTable} active= {false}  />
+                <Sidebarlink text="Ledger" Icon={HiTable}/>
                 <br />
-                <Sidebarlink text="Settings" Icon={HiCog} active= {false}  />
+                <Sidebarlink text="Settings" Icon={HiCog} />
             </div>
             <br />
         </div>
