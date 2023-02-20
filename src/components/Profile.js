@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
-import ErrorMessageContainer from '../components/Message/Error'
-import { Typography } from '@mui/material';
+import ErrorMessageContainer from './Error'
+import EditIcon from '@mui/icons-material/Edit';
+
+// Import Hero Icons
+import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin } from "react-icons/hi";
+
 const states = {
     AL: 'Alabama',
     AK: 'Alaska',
@@ -79,38 +83,37 @@ export default function ProfileComponent() {
     if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
     if (!data) return <div>no data</div>
     return (
-        <div className="flex-grow border-l border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[55px]">
+        <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
-            <h6 className="justify-center">Customer Profile</h6>
+                <h6 className="justify-center">Your Organization</h6>
                 <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
-                    <EditNotificationsIcon className="h6 fill-white" />
+                    <EditIcon className="h6 fill-white" />
                 </div>
             </div>
             <br></br>
-            <form className="items-center bg-neutral-800">
+            <form className="items-center dark:bg-gray-900">
                 <div class="flex flex-wrap -mx-3 mb-5">
                     <div class="w-full md:w-1/2 px-6 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
-                            First Name
+                            Name
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-white border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane">
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].customerName}>
                         </input>
-                       
                     </div>
                     <div class="w-full md:w-1/2 px-6">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
-                            Last Name
+                            Ticker
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].orgLabel}>
                         </input>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-6">
-                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-password">
-                            Password
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
+                            Email
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************">
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].customerEmail}>
                         </input>
                     </div>
                 </div>
@@ -119,7 +122,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
                             City
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque">
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={data[0].customerCity}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
@@ -127,12 +130,12 @@ export default function ProfileComponent() {
                             State
                         </label>
                         <div class="relative">
-                            <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-state" placeholder='New York'>
                                 {Object.values(states).map((state) => {
                                     return (
                                         <option>{state}</option>
                                     )
-                                }) }
+                                })}
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
@@ -141,14 +144,32 @@ export default function ProfileComponent() {
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
+                            Address
+                        </label>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerAddress}>
+                        </input>
+                    </div>
+                    <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
                             Zip
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210">
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerZip}>
+                        </input>
+                    </div>
+                    <div class="w-full md:w-1/3 px-6 mb-6 md:mb-8">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
+                            Industry
+                        </label>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerIndustry}>
                         </input>
                     </div>
 
                 </div>
             </form>
+
+            <br></br>
+
+            <br></br>
         </div>
     )
 }

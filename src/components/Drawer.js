@@ -3,22 +3,25 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
 // Import Hero Icons
-import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin } from "react-icons/hi";
-
+import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin, GrDocumentText } from "react-icons/hi";
 
 const Drawer = () => {
-
   const [open, setOpen] = useState(false)
   const Menus = [
-    { title: "Alerts", icon: <HiHome className="fill-white"/>, link: "/alerts",  },
-    { title: "Profile", icon: <HiUser className="fill-white"/>, link: "/profile" },
-    { title: "Ledger", icon: <HiTable className="fill-white"/>, link: "/ledger" },
-    { title: "Settings", icon: <HiCog className="fill-white"/>, link: "/settings" },
+
+    { title: "Customer Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
+      { title: "Ledger", icon: <HiCog className="fill-white" />, link: "/alerts" },
+      { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
+      { title: "Risk Ratings", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
+    ] },
+    { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },
+    { title: "Ledger", icon: <HiTable className="fill-white" />, link: "/ledger"},
+    { title: "Settings", icon: <HiCog className="fill-white" />, link: "/settings" },
     {
-      title: "API", icon: <HiKey/>, link: "/api",
+      title: "API", icon: <HiKey />, link: "/api",
       submenus: [
-        { title: "API Keys", icon: "key", link: "/api/keys" },
-        { title: "API Docs", icon: "book", link: "/api/docs" },
+        { title: "Keys", icon: <HiCog className="fill-white" />, link: "/api/keys" },
+        { title: "Docs", icon: <HiLogin className="fill-white" />, link: "/api/docs" },
       ]
     }
   ]
@@ -55,19 +58,29 @@ const Drawer = () => {
                     {title}
                   </a>
                 </div>
-                {submenus && (
-                  <span className="text-white">
-                    <i className="fas fa-chevron-down"></i>
-                  </span>
-                )}
+
+
               </li>
+              {submenus && submenus.map((item) => {
+                  return (
+                      <ul className="space-y-6 lg:space-y-4  border-slate-50 sm:ml-[70px] xl:ml-[5px] space-gap-between m-3">
+                          <li>
+                          <a href={item.link} className="text-white font-medium text-sm xl:ml-[25px]">
+                            <span>
+                              {item.title}
+                            </span>
+                          </a>
+                          </li>
+                      </ul>
+                  )
+                })
+
+                }
             </ul>
           )
         })}
       </div>
-
     </div>
-
   )
 }
 
