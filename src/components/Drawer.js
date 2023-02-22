@@ -11,7 +11,7 @@ const Drawer = () => {
 
     { title: "Customer Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
       { title: "Ledger", icon: <HiCog className="fill-white" />, link: "/alerts" },
-      { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
+      { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" },
       { title: "Risk Ratings", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
     ] },
     { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },
