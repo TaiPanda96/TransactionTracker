@@ -19,8 +19,21 @@ export default function SmartContractComponent({ customerProfile = [] }) {
     const [eSign, setEsign] = useState(null);
     const [triggerSteps, setTriggerSteps] = useState(null);
     const [executionSteps, setExecutionSteps] = useState(null);
-    const handleSubmit = async () => {
-        let payload = {}
+    const [description, setDescription] = useState(null);
+    const handleSubmit = async (event) => {
+        let payload = {
+            contractType: contractType, 
+            eSign: eSign,
+            triggerSteps: [triggerSteps],
+            executionSteps: [executionSteps]
+        }
+        axios.post(`http://localhost:8080/api/contracts/post-contract/${profile[0].customerId}`, payload)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     useEffect(() => {
@@ -98,7 +111,7 @@ export default function SmartContractComponent({ customerProfile = [] }) {
             </form>}
             <br></br>
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
-                <h6 className="justify-center">Add/Edit Contract</h6>
+                <h6 className="justify-center">Add Smart Contract</h6>
                 <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
                     <EditIcon className="h2 fill-white" onClick={() => setEditContractOpen(!contractOpen)} />
                 </div>
@@ -109,37 +122,62 @@ export default function SmartContractComponent({ customerProfile = [] }) {
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
                             Contract Type
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].customerName}>
-                        </input>
-                    </div>
-                    <div class="w-full md:w-1/2 px-6">
-                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
-                            eSign
-                        </label>
-                        <input class="items-start bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" type="checkbox">
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            value={contractType}
+                            onChange={(e) => setContractType(e.target.value)}>
                         </input>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-6">
-                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
-                            Customer Email
+                    <div class="w-full md:w-1/3 px-6 mb-6 md:mb-5">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
+                            Description
                         </label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].customerEmail}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        >
                         </input>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-2">
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-5">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
-                            Financial Ratio Requirements
+                            Trigger Steps
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={data[0].customerCity}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text"
+                            value={triggerSteps}
+                            onChange={(e) => setTriggerSteps(e.target.value)}
+                        >
+                        </input>
+
+                    </div>
+                    <div class="w-full md:w-1/3 px-6 mb-6 md:mb-5">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
+                            Execution Steps
+                        </label>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text"
+                            value={executionSteps}
+                            onChange={(e) => setExecutionSteps(e.target.value)}
+                        >
                         </input>
                     </div>
+                    <div class="w-full md:w-1/3 px-3">
+                        <label className='relative inline-flex items-center mr-5 cursor-pointer'>
+                            <input class="sr-only peer bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" type="checkbox"
+                                value={eSign}
+                                onSelect={() => setEsign(true)}
+                            >
+                            </input>
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-red-600"></div>
+                            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">eSign</span>
+                        </label>
+                    </div>
                     <div className="w-full px-8 mb-6 md:mb-5 xl:ml-[705px]">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white  sm:text-sm font-bold py-2 px-7 mb-11 rounded-full">
-                            Button
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white  sm:text-sm font-bold py-2 px-7 mb-11 rounded-full"
+                            onClick= {() => handleSubmit()}
+                        >
+                            Submit
                         </button>
                     </div>
 
