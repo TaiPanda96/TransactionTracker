@@ -2,6 +2,7 @@ import moment from 'moment';
 import { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import ErrorMessageContainer from './Error'
+import axios from 'axios';
 import { HiArrowsExpand, HiArrowCircleUp } from 'react-icons/hi'
 
 export default function SmartContractComponent({ customerProfile = [] }) {
@@ -11,12 +12,15 @@ export default function SmartContractComponent({ customerProfile = [] }) {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     let profile = JSON.parse(customerProfile);
-    const headers = [
-        'contractId', 'customerEmail', 'contractType', 'trigger',
-    ]
+    const headers = ['contractId', 'customerEmail', 'contractType', 'trigger']
 
-    const handleSmartContractSubmission = async () => {
-
+    // Form Submission for Smart Contract
+    const [contractType, setContractType] = useState(null);
+    const [eSign, setEsign] = useState(null);
+    const [triggerSteps, setTriggerSteps] = useState(null);
+    const [executionSteps, setExecutionSteps] = useState(null);
+    const handleSubmit = async () => {
+        let payload = {}
     }
 
     useEffect(() => {
@@ -94,68 +98,54 @@ export default function SmartContractComponent({ customerProfile = [] }) {
             </form>}
             <br></br>
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
-                <h6 className="justify-center">Active Contracts</h6>
+                <h6 className="justify-center">Add/Edit Contract</h6>
                 <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
                     <EditIcon className="h2 fill-white" onClick={() => setEditContractOpen(!contractOpen)} />
                 </div>
             </div>
-                {contractOpen && <form className="items-center dark:bg-gray-900">
-                    <div class="flex flex-wrap -mx-3 mb-5">
-                        <div class="w-full md:w-1/2 px-6 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
-                                Name
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].customerName}>
-                            </input>
-                        </div>
-                        <div class="w-full md:w-1/2 px-6">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
-                                Ticker
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].orgLabel}>
-                            </input>
-                        </div>
+            {contractOpen && <form className="items-center dark:bg-gray-900">
+                <div class="flex flex-wrap -mx-3 mb-5">
+                    <div class="w-full md:w-1/2 px-6 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
+                            Contract Type
+                        </label>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].customerName}>
+                        </input>
                     </div>
-                    <div class="flex flex-wrap -mx-3 mb-6">
-                        <div class="w-full px-6">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
-                                Email
-                            </label>
-                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].customerEmail}>
-                            </input>
-                        </div>
+                    <div class="w-full md:w-1/2 px-6">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
+                            eSign
+                        </label>
+                        <input class="items-start bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" type="checkbox">
+                        </input>
                     </div>
-                    <div class="flex flex-wrap -mx-3 mb-2">
-                        <div class="w-full md:w-1/3 px-6 mb-6 md:mb-5">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
-                                City
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={data[0].customerCity}>
-                            </input>
-                        </div>
-                        <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
-                                Address
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerAddress}>
-                            </input>
-                        </div>
-                        <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
-                                Zip
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerZip}>
-                            </input>
-                        </div>
-                        <div class="w-full md:w-1/3 px-6 mb-6 md:mb-8">
-                            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
-                                Industry
-                            </label>
-                            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerIndustry}>
-                            </input>
-                        </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-6">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
+                            Customer Email
+                        </label>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].customerEmail}>
+                        </input>
                     </div>
-                </form>}
-            </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-2">
+                    <div class="w-full md:w-1/3 px-6 mb-6 md:mb-5">
+                        <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
+                            Financial Ratio Requirements
+                        </label>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={data[0].customerCity}>
+                        </input>
+                    </div>
+                    <div className="w-full px-8 mb-6 md:mb-5 xl:ml-[705px]">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white  sm:text-sm font-bold py-2 px-7 mb-11 rounded-full">
+                            Button
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>}
+        </div>
     )
 }
