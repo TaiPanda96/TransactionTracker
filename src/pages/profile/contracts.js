@@ -8,7 +8,7 @@ export default function Profile({customerProfile}) {
     <>
       <div className="bg-neutral-900 min-h-screen flex max-w-[1600px] mx-auto">
         <DrawerComponent/>
-        <SmartContractComponent/>
+        <SmartContractComponent customerProfile={customerProfile}/>
         <Widget customerProfile={customerProfile}/>
       </div>
     </>

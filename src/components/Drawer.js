@@ -15,7 +15,7 @@ const Drawer = () => {
       { title: "Risk Ratings", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
     ] },
     { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },
-    { title: "Ledger", icon: <HiTable className="fill-white" />, link: "/ledger"},
+    { title: "All Ledgers", icon: <HiTable className="fill-white" />, link: "/ledger"},
     { title: "Settings", icon: <HiCog className="fill-white" />, link: "/settings" },
     {
       title: "API", icon: <HiKey />, link: "/api",
