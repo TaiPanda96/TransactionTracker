@@ -12,7 +12,7 @@ export default function Widget({ customerProfile = []}) {
     
     useEffect(() => {
         setLoading(true)
-        fetch('http://localhost:8080/api/transactions/get-transaction?customerId=63eaca8559ef868d14301442')
+        fetch('http://localhost:8080/api/transactions/get-transaction?borrowerId=63fa9aaaee468767315a76e8')
             .then((res) => res.json())
             .then((data) => {
                 setData(data)
@@ -54,7 +54,7 @@ export default function Widget({ customerProfile = []}) {
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                         <li class="py-3 sm:py-4">
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                {profile[0].customerName} - {info.data.assetClass}
+                                {profile[0].username} - {info.data.assetClass}
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm text-gray-500 truncate dark:text-gray-400 items-end">

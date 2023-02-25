@@ -9,9 +9,9 @@ const Drawer = () => {
   const [open, setOpen] = useState(false)
   const Menus = [
 
-    { title: "Customer Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
-      { title: "Ledger", icon: <HiCog className="fill-white" />, link: "/alerts" },
+    { title: "Borrower Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
       { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" },
+      { title: "Repayment Alerts", icon: <HiCog className="fill-white" />, link: "/alerts" },
       { title: "Risk Ratings", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
     ] },
     { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },

@@ -65,7 +65,7 @@ export default function ProfileComponent() {
 
     useEffect(() => {
         setLoading(true)
-        fetch('http://localhost:8080/api/customers/auth-get?customerId=63eaca8559ef868d14301442')
+        fetch('http://localhost:8080/api/auth/get?id=63fa9aaaee468767315a76e8')
             .then(
                 (data) => data.json()
             ).then(
@@ -97,7 +97,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
                             Name
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].customerName}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].username}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/2 px-6">
