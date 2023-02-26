@@ -1,7 +1,7 @@
 import DrawerComponent from "../../components/Drawer"
 import ProfileComponent from "../../components/Profile"
 import Widget from "../../components/Widgets"
-import getCustomer from "../../../endpoints/customer";
+import getCustomer from "../api/customer";
 
 export default function Profile({customerProfile}) {
   return (

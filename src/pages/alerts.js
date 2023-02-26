@@ -1,7 +1,7 @@
 import Widget from '../components/Widgets';
 import LedgerAlertComponent from "../components/Alerts/AlertFeed"
 import DrawerComponent from "../components/Drawer"
-import getCustomer from "../../endpoints/customer"
+import getCustomer from "./api/customer"
 
 function Feed({ customerProfile }) {
   return (

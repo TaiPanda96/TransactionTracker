@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
-import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
+import { useRouter } from "next/router";
 import ErrorMessageContainer from './Error'
 import EditIcon from '@mui/icons-material/Edit';
-
-// Import Hero Icons
-import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin } from "react-icons/hi";
 
 const states = {
     AL: 'Alabama',
@@ -59,12 +56,16 @@ const states = {
     WY: 'Wyoming',
 }
 export default function ProfileComponent() {
+    const [authorized, setAuthorized] = useState(false);
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null)
+    const router = useRouter();
 
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
+        const loggedInUser = localStorage.getItem("authenticated");
+        if (loggedInUser) { setAuthorized(loggedInUser) }
         fetch('http://localhost:8080/api/auth/get?id=63fa9aaaee468767315a76e8')
             .then(
                 (data) => data.json()
@@ -82,6 +83,7 @@ export default function ProfileComponent() {
     if (isLoading) return <div>loading...</div>
     if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
     if (!data) return <div>no data</div>
+    if (!authorized) { router.push('/') }
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
@@ -97,14 +99,14 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
                             Name
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].username}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={data[0].username}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/2 px-6">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
-                            Ticker
+                            Profile Type
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={data[0].orgLabel}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={data[0].role}>
                         </input>
                     </div>
                 </div>
@@ -113,7 +115,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
                             Email
                         </label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].customerEmail}>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].email}>
                         </input>
                     </div>
                 </div>
@@ -172,6 +174,7 @@ export default function ProfileComponent() {
             <br></br>
         </div>
     )
+
 }
 
 

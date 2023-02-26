@@ -5,3 +5,4 @@ export default async function getCustomer() {
     const data = await response.json()
     return JSON.stringify(data);
 }
+

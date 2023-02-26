@@ -12,7 +12,7 @@ export default function SmartContractComponent({ customerProfile = [] }) {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     let profile = JSON.parse(customerProfile);
-    const headers = ['contractId', 'customerEmail', 'contractType', 'trigger']
+    const headers = ['contractId', 'email', 'contractType', 'triggerOn']
 
     // Form Submission for Smart Contract
     const [contractType, setContractType] = useState(null);
@@ -20,7 +20,8 @@ export default function SmartContractComponent({ customerProfile = [] }) {
     const [triggerSteps, setTriggerSteps] = useState(null);
     const [executionSteps, setExecutionSteps] = useState(null);
     const [description, setDescription] = useState(null);
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         let payload = {
             contractType: contractType, 
             eSign: eSign,
@@ -38,7 +39,7 @@ export default function SmartContractComponent({ customerProfile = [] }) {
 
     useEffect(() => {
         setLoading(true)
-        fetch('http://localhost:8080/api/contracts/get-contracts/63eaca8559ef868d14301442')
+        fetch('http://localhost:8080/api/contracts/get-contracts/63fa9aaaee468767315a76e8')
             .then(
                 (data) => data.json()
             ).then(
@@ -90,10 +91,10 @@ export default function SmartContractComponent({ customerProfile = [] }) {
                                         return (
                                             <tr class="dark:bg-gray-900 border-b">
                                                 {headers.map((heading) =>
-                                                    heading === 'trigger' && row[heading] ?
+                                                    heading === 'triggerOn' && row[heading] ?
                                                         <td className="text-sm text-white font-light px-4 py-4 whitespace
                                                 ">
-                                                            {row[heading]['description']}
+                                                            {row['triggerOn']['description']}
                                                         </td> :
                                                         <td className="text-sm text-white font-light px-4 py-4 whitespace
                                                 ">

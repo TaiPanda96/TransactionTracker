@@ -1,30 +1,78 @@
-export default function LoginCard() {
-    return (
-        <div className="flex w-screen justify-center items-center">
-            <div className="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700 w-screen">
-                <form className="space-y-6" action="#">
-                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                        Login
-                    </h3>
-                    <div>
-                        <label for="email" className="text-sm items-justify-center text-gray-900 block mb-2 dark:text-gray-300">Email</label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required=""></input>
-                    </div>
-                    <div>
-                        <label for="password" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Your password</label>
-                        <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required=""></input>
-                    </div>
+import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import ErrorMessageContainer from "./Error";
 
-                    <div class="flex items-start">
+export default function LoginComponent() {
+    const router = useRouter();
+    const [username, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoggedIn, setLogin] = useState(false);
+    const [error, setError] = useState(null);
+    const [user, setUserDetails] = useState(null);
 
-                    </div>
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
-                    <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                        Not registered? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create
-                            account</a>
-                    </div>
-                </form>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let payload = {
+            username: username, 
+            password: password
+        }
+        axios.post(`http://localhost:8080/api/auth/login`, payload)
+        .then(function (response) {
+            return response
+            
+        }).then((response) => {
+            if (response.data) {
+                setUserDetails(response.data)
+                setLogin(true)
+            } else {
+                setLogin(false)
+            }
+        })
+        .catch(function (error) {
+            setError(error)
+        });
+    }
+
+    if (error) { 
+        return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div> }
+    if (isLoggedIn) {
+        localStorage.setItem("authenticated", true);
+        localStorage.setItem("user", user)
+        router.push("/profile");
+    } else {
+        return (
+            <div className="flex w-screen justify-center items-center">
+                <div className="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700 w-screen">
+                    <form className="space-y-6">
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                            Login
+                        </h3>
+                        <div>
+                            <label className="text-sm items-justify-center text-gray-900 block mb-2 dark:text-gray-300">Username</label>
+                            <input className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                value={username}
+                                onChange={(e) => setUserName(e.target.value)}
+                            ></input>
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Your password</label>
+                            <input className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                        </div>
+
+                        <div className="flex items-start">
+                        </div>
+                        <button type="button" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={(e) => handleSubmit(e)}>
+                            Login to your account
+                        </button>
+                        <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                            Not registered? <a href="/register" className="text-blue-700 hover:underline dark:text-blue-500">Create
+                                account</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
