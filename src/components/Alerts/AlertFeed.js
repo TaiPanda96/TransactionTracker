@@ -12,20 +12,20 @@ const AlertFeedComponent = ({ notificationData = [] }) => {
                 return (
                     <div className='h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" title="Woman holding a mug'>
                         <div className='border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal'>
-                            <div class="mb-8">
-                                <div class="text-gray-900 font-bold text-xl mb-2">
+                            <div className="mb-8">
+                                <div className="text-gray-900 font-bold text-xl mb-2">
                                     The investment company JP Morgan will help Ukraine attract private investments for the country’s reconstruction.
                                 </div>
-                                <div class="relative h-32 w-32 ...">
+                                <div className="relative h-32 w-32 ...">
                                     <span className=" bg-blue-100 text-red-800 text-xs font-medium inline-flex justify-end px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 ">
-                                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                                        <svg aria-hidden="true" className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
                                         {moment().subtract(15, 'minutes').minute()} min ago
                                     </span>
                                 </div>
                                 <Image src={image ? image : ImagePlaceHolder}></Image>
                                 <br></br>
-                                <p class="text-gray-700 text-base">{text}</p>
-                                <p class="text-gray-700 text-base">
+                                <p className="text-gray-700 text-base">{text}</p>
+                                <p className="text-gray-700 text-base">
                                     Building the backbone of digital lending innovation.
                                     Building the backbone of digital lending innovation.
                                     Building the backbone of digital lending innovation.
