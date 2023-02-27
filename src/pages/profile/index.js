@@ -3,19 +3,14 @@ import ProfileComponent from "../../components/Profile"
 import Widget from "../../components/Widgets"
 import getCustomer from "../api/customer";
 
-export default function Profile({customerProfile}) {
+export default function Profile() {
   return (
     <>
       <div className="bg-neutral-900 min-h-screen flex max-w-[1600px] mx-auto">
         <DrawerComponent/>
         <ProfileComponent/>
-        <Widget customerProfile={customerProfile}/>
+        <Widget/>
       </div>
     </>
   )
-}
-
-export async function getStaticProps() {
-    let data = await getCustomer()
-    return { props: { customerProfile: data }}
 }

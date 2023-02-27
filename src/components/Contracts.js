@@ -1,17 +1,18 @@
-import moment from 'moment';
+import { useRouter } from "next/router";
 import { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import ErrorMessageContainer from './Error'
 import axios from 'axios';
 import { HiArrowsExpand, HiArrowCircleUp } from 'react-icons/hi'
 
-export default function SmartContractComponent({ customerProfile = [] }) {
+export default function SmartContractComponent({ }) {
     const [open, setOpen] = useState(false);
+    const [authorized, setAuthorized] = useState(false);
     const [contractOpen, setEditContractOpen] = useState(true);
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    let profile = JSON.parse(customerProfile);
+    const router  = useRouter();
     const headers = ['contractId', 'email', 'contractType', 'triggerOn']
 
     // Form Submission for Smart Contract
@@ -39,7 +40,15 @@ export default function SmartContractComponent({ customerProfile = [] }) {
 
     useEffect(() => {
         setLoading(true)
-        fetch('http://localhost:8080/api/contracts/get-contracts/63fa9aaaee468767315a76e8')
+        const loggedInUser = sessionStorage.getItem("authenticated");
+        const accessToken  = sessionStorage.getItem("accessToken");
+        if (loggedInUser) { setAuthorized(true)}
+        fetch('http://localhost:8080/api/contracts/get-contracts', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            }
+        })
             .then(
                 (data) => data.json()
             ).then(
@@ -56,6 +65,7 @@ export default function SmartContractComponent({ customerProfile = [] }) {
     if (isLoading) return <div>loading...</div>
     if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
     if (!data) return <div>no data</div>
+    if (!authorized) { router.push('/') }
 
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
@@ -70,7 +80,7 @@ export default function SmartContractComponent({ customerProfile = [] }) {
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full px-6">
                             <label className="block uppercase tracking-wide text-white text-xs font-bold mb-3 ml-5 mt-6" for="grid-password">
-                                Currently Active Smart Contracts for {profile[0].customerName}
+                                Currently Active Smart Contracts for {sessionStorage.getItem("username")}
                             </label>
                         </div>
                     </div>

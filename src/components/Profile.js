@@ -1,72 +1,33 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { states } from "./States";
 import ErrorMessageContainer from './Error'
 import EditIcon from '@mui/icons-material/Edit';
 
-const states = {
-    AL: 'Alabama',
-    AK: 'Alaska',
-    AZ: 'Arizona',
-    AR: 'Arkansas',
-    CA: 'California',
-    CO: 'Colorado',
-    CT: 'Connecticut',
-    DE: 'Delaware',
-    FL: 'Florida',
-    GA: 'Georgia',
-    HI: 'Hawaii',
-    ID: 'Idaho',
-    IL: 'Illinois',
-    IN: 'Indiana',
-    IA: 'Iowa',
-    KS: 'Kansas',
-    KY: 'Kentucky',
-    LA: 'Louisiana',
-    ME: 'Maine',
-    MD: 'Maryland',
-    MA: 'Massachusetts',
-    MI: 'Michigan',
-    MN: 'Minnesota',
-    MS: 'Mississippi',
-    MO: 'Missouri',
-    MT: 'Montana',
-    NE: 'Nebraska',
-    NV: 'Nevada',
-    NH: 'New Hampshire',
-    NJ: 'New Jersey',
-    NM: 'New Mexico',
-    NY: 'New York',
-    NC: 'North Carolina',
-    ND: 'North Dakota',
-    OH: 'Ohio',
-    OK: 'Oklahoma',
-    OR: 'Oregon',
-    PA: 'Pennsylvania',
-    RI: 'Rhode Island',
-    SC: 'South Carolina',
-    SD: 'South Dakota',
-    TN: 'Tennessee',
-    TX: 'Texas',
-    UT: 'Utah',
-    VT: 'Vermont',
-    VA: 'Virginia',
-    WA: 'Washington',
-    WV: 'West Virginia',
-    WI: 'Wisconsin',
-    WY: 'Wyoming',
-}
 export default function ProfileComponent() {
+    const router                      = useRouter();
     const [authorized, setAuthorized] = useState(false);
-    const [data, setData] = useState(null)
-    const [isLoading, setLoading] = useState(false);
-    const [error, setError] = useState(null)
-    const router = useRouter();
+    const [data, setData]             = useState(null);
+    const [isLoading, setLoading]     = useState(false);
+    const [error, setError]           = useState(null);
+    const [user,setUser]              = useState();
+    const [username, setUserName]     = useState();
+    const [role, setUserRole]         = useState();
+    const [email, setEmail]           = useState();
 
     useEffect(() => {
         setLoading(true);
-        const loggedInUser = localStorage.getItem("authenticated");
-        if (loggedInUser) { setAuthorized(loggedInUser) }
-        fetch('http://localhost:8080/api/auth/get?id=63fa9aaaee468767315a76e8')
+        setAuthorized(sessionStorage.getItem("authenticated"));
+        setUser(sessionStorage.getItem("userSession"));
+        setUserName(sessionStorage.getItem("username"));
+        setUserRole(sessionStorage.getItem("role"));
+        setEmail(sessionStorage.getItem("email"));
+        fetch('http://localhost:8080/api/auth/get?id=63fd0227a82c13a57bd3f654', {
+            headers: {
+                'Content-Type': 'application/json',
+                "authorization": sessionStorage.getItem("accessToken") || '',
+            }
+        })
             .then(
                 (data) => data.json()
             ).then(
@@ -80,9 +41,11 @@ export default function ProfileComponent() {
             })
     }, []);
 
+
     if (isLoading) return <div>loading...</div>
     if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
     if (!data) return <div>no data</div>
+
     if (!authorized) { router.push('/') }
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
@@ -99,14 +62,14 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
                             Name
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={data[0].username}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={username || ''}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/2 px-6">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
                             Profile Type
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={data[0].role}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={role}>
                         </input>
                     </div>
                 </div>
@@ -115,7 +78,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-3" for="grid-password">
                             Email
                         </label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={data[0].email}>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" placeholder={email || ''}>
                         </input>
                     </div>
                 </div>
@@ -124,7 +87,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-city">
                             City
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={data[0].customerCity}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" type="text" placeholder={user || ''}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
@@ -148,21 +111,21 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
                             Address
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerAddress}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={user || ''}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
                             Zip
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerZip}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={user || ''}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-8">
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-zip">
                             Industry
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={data[0].customerIndustry}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required="true" id="grid-zip" type="text" placeholder={user || ''}>
                         </input>
                     </div>
 
