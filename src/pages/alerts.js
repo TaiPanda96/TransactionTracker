@@ -1,5 +1,5 @@
-import Widget from '../components/Widgets';
-import LedgerAlertComponent from "../components/Alerts/AlertFeed"
+import Widget from '../components/Livefeed';
+import LedgerAlertComponent from "../components/Alerts/Feed"
 import DrawerComponent from "../components/Drawer"
 
 function Feed() {

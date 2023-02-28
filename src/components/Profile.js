@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import { states } from "./States";
-import ErrorMessageContainer from './Error'
+import ErrorMessageContainer from './Messages/Error'
+import MessageContainer from './Messages/NoData';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function ProfileComponent() {
@@ -16,13 +17,13 @@ export default function ProfileComponent() {
     const [email, setEmail]           = useState();
 
     useEffect(() => {
-        setLoading(true);
         setAuthorized(sessionStorage.getItem("authenticated"));
-        setUser(sessionStorage.getItem("userSession"));
+        setLoading(true);
+        const user = setUser(sessionStorage.getItem("userSession"));
         setUserName(sessionStorage.getItem("username"));
         setUserRole(sessionStorage.getItem("role"));
         setEmail(sessionStorage.getItem("email"));
-        fetch('http://localhost:8080/api/auth/get?id=63fd0227a82c13a57bd3f654', {
+        fetch(`http://localhost:8080/api/auth/get?id=${user}`, {
             headers: {
                 'Content-Type': 'application/json',
                 "authorization": sessionStorage.getItem("accessToken") || '',
@@ -47,6 +48,7 @@ export default function ProfileComponent() {
     if (!data) return <div>no data</div>
 
     if (!authorized) { router.push('/') }
+
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
@@ -138,6 +140,11 @@ export default function ProfileComponent() {
         </div>
     )
 
+}
+
+
+export const getBorrowerProfile = async (req,res) => {
+    return null;
 }
 
 

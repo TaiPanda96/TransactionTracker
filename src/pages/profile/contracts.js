@@ -1,6 +1,6 @@
 import DrawerComponent from "../../components/Drawer"
 import SmartContractComponent from "@/components/Contracts";
-import Widget from "../../components/Widgets"
+import Widget from "../../components/Livefeed"
 
 export default function Profile() {
   return (

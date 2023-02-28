@@ -30,12 +30,12 @@ const Drawer = () => {
     <div className="max-w-2xl sm:ml-[5px] xl:ml-[2px] border-gray-500 bg-gray">
       <div className={`${open ? "w-80" : "w-20"} bg-indigo-900 h-screen p-5  pt-8 relative duration-300`}>
         <ArrowCircleLeftIcon className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple fill-white
-           border-2 rounded-full  ${!open && "rotate-180"}`}
+           border-2 rounded-full  ${!open && "fill-white rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
           <MenuOpenIcon
-            className={`cursor-pointer duration-500 ${open && "rotate-[360deg] fill-white"
+            className={`cursor-pointer duration-500 ${open ? "rotate-[360deg] fill-white" : "fill-white"
               }`}
           />
           <h1

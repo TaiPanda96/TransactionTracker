@@ -1,19 +1,23 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import ErrorMessageContainer from './Error'
+import ErrorMessageContainer from './Messages/Error'
 import axios from 'axios';
-import { HiArrowsExpand, HiArrowCircleUp } from 'react-icons/hi'
+
+import MessageContainer from "./Messages/NoData";
+import SubmittedMessage from "./Messages/Submitted";
+import { HiArrowsExpand, HiArrowCircleUp, AiOutlineCloseCircle } from 'react-icons/hi'
+
+
+const headers = ['contractId', 'email', 'contractType', 'description']
 
 export default function SmartContractComponent({ }) {
     const [open, setOpen] = useState(false);
-    const [authorized, setAuthorized] = useState(false);
     const [contractOpen, setEditContractOpen] = useState(true);
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const router  = useRouter();
-    const headers = ['contractId', 'email', 'contractType', 'triggerOn']
+    const router = useRouter();
 
     // Form Submission for Smart Contract
     const [contractType, setContractType] = useState(null);
@@ -21,63 +25,68 @@ export default function SmartContractComponent({ }) {
     const [triggerSteps, setTriggerSteps] = useState(null);
     const [executionSteps, setExecutionSteps] = useState(null);
     const [description, setDescription] = useState(null);
+    const [submitted, setSubmission] = useState(false);
+    const [show, setShowHide] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         let payload = {
-            contractType: contractType, 
+            contractType: contractType,
             eSign: eSign,
             triggerSteps: [triggerSteps],
             executionSteps: [executionSteps]
         }
-        axios.post(`http://localhost:8080/api/contracts/post-contract/${profile[0].customerId}`, payload)
-        .then(function (response) {
-            console.log(response);
+        const accessToken = sessionStorage.getItem("accessToken");
+        setError(null);
+        axios.post(`http://localhost:8080/api/contracts/post-contract`, payload, {
+            headers: "Content-Type",
+            Authorization: accessToken
         })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(function (response) {
+                if (response.data && !response.data['error']) {
+                    setSubmission(true);
+                } else {
+                    setSubmission(false);
+                }
+            })
+            .catch(function (error) {
+                setError(error)
+            });
     }
 
     useEffect(() => {
-        setLoading(true)
-        const loggedInUser = sessionStorage.getItem("authenticated");
-        const accessToken  = sessionStorage.getItem("accessToken");
-        if (loggedInUser) { setAuthorized(true)}
+        setLoading(true);
+        if (!sessionStorage.getItem("authenticated")) { router.push('/') }
+        const accessToken = sessionStorage.getItem("accessToken");
         fetch('http://localhost:8080/api/contracts/get-contracts', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': accessToken
             }
-        })
-            .then(
-                (data) => data.json()
-            ).then(
-                (data) => {
-                    setData(data);
-                    setLoading(false)
-                }
-            ).catch((err) => {
-                setError(err)
+        }).then(
+            (data) => data.json()
+        ).then(
+            (data) => {
+                setData(data);
                 setLoading(false)
-            })
+            }
+        ).catch((err) => {
+            setError(err)
+            setLoading(false)
+        })
     }, []);
 
     if (isLoading) return <div>loading...</div>
-    if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
-    if (!data) return <div>no data</div>
-    if (!authorized) { router.push('/') }
 
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
                 <h6 className="justify-center">Active Contracts</h6>
-                <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
-                    <HiArrowCircleUp className="h2 fill-white" onClick={() => setOpen(!open)} />
-                </div>
+                <HiArrowCircleUp className="h2 fill-white inline" onClick={() => setOpen(!open)} />
             </div>
             {open && <form className="items-center dark:bg-gray-875">
-                <div className="flex flex-wrap -mx-3 mb-5">
-                    <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="flex flex-wrap -mx-3">
+                    <div className="flex flex-wrap -mx-3 mb-3">
                         <div className="w-full px-6">
                             <label className="block uppercase tracking-wide text-white text-xs font-bold mb-3 ml-5 mt-6" for="grid-password">
                                 Currently Active Smart Contracts for {sessionStorage.getItem("username")}
@@ -97,7 +106,7 @@ export default function SmartContractComponent({ }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map((row) => {
+                                    {Array.isArray(data) && data.length > 1 && data.map((row) => {
                                         return (
                                             <tr class="dark:bg-gray-900 border-b">
                                                 {headers.map((heading) =>
@@ -127,6 +136,9 @@ export default function SmartContractComponent({ }) {
                     <EditIcon className="h2 fill-white" onClick={() => setEditContractOpen(!contractOpen)} />
                 </div>
             </div>
+
+            { submitted && <MessageContainer message={"Created a New Smart Contract!"}/>}
+            { error && <ErrorMessageContainer error={error} message={error.message}/>}
             {contractOpen && <form className="items-center dark:bg-gray-900">
                 <div class="flex flex-wrap -mx-3 mb-5">
                     <div class="w-full md:w-1/2 px-6 mb-6 md:mb-0">
@@ -186,7 +198,7 @@ export default function SmartContractComponent({ }) {
                     </div>
                     <div className="w-full px-8 mb-6 md:mb-5 xl:ml-[705px]">
                         <button class="bg-blue-500 hover:bg-blue-700 text-white  sm:text-sm font-bold py-2 px-7 mb-11 rounded-full"
-                            onClick= {() => handleSubmit()}
+                            onClick={(e) => handleSubmit(e)}
                         >
                             Submit
                         </button>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import ErrorMessageContainer from "./Error";
+import ErrorMessageContainer from "./Messages/Error";
 
 export default function LoginComponent() {
     const router = useRouter();
@@ -12,6 +12,7 @@ export default function LoginComponent() {
     const [userRole, setUserRole] = useState('');
     const [isLoggedIn, setLogin]  = useState(false);
     const [error, setError]       = useState(null);
+    const [email, setEmail] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +31,7 @@ export default function LoginComponent() {
                 setAccessToken(accessToken);
                 setUserName(username);
                 setUserRole(role);
-                sessionStorage.getItem("email", email)
+                setEmail(email);
 
             } else { setLogin(false) }
         })
@@ -47,6 +48,7 @@ export default function LoginComponent() {
         sessionStorage.setItem("username",username);
         sessionStorage.setItem("accessToken",userAccessToken);
         sessionStorage.setItem("role",userRole);
+        sessionStorage.setItem("email", email);
         router.push("/profile");
     } else {
         return (

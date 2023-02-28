@@ -1,6 +1,6 @@
 import DrawerComponent from "../../components/Drawer"
 import ProfileComponent from "../../components/Profile"
-import Widget from "../../components/Widgets"
+import Widget from "../../components/Livefeed"
 
 export default function Profile() {
   return (
