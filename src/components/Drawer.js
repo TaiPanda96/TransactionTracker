@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
@@ -6,16 +7,54 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin, GrDocumentText } from "react-icons/hi";
 
 const Drawer = () => {
-  const [open, setOpen] = useState(false)
-  const Menus = [
+  const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [error,setError] = useState(null);
+  const [role, setUserRole] = useState('');
+  const [user, setUser] = useState('');
+  const [isLoading,setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setAuthorized(sessionStorage.getItem("authenticated") || false);
+    const user = setUser(sessionStorage.getItem("userSession"));
+    fetch(`http://localhost:8080/api/auth/get?id=${user}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        "authorization": sessionStorage.getItem("accessToken") || '',
+      }
+    })
+      .then(
+        (data) => data.json()
+      ).then(
+        (data) => {
+          if (data && data['error']) {
+            let { name, message, expiredAt } = data['error'];
+            if (name === 'TokenExpiredError') {
+              router.push('/')
+            }
+          } else {
+            setData(data);
+            setLoading(false);
+            setUserRole(sessionStorage.getItem("role"));
+          }
+        }
+      ).catch((err) => {
+        setError(err)
+        setLoading(false)
+      })
+  }, []);
 
-    { title: "Borrower Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
-      { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" },
-      { title: "Repayment Alerts", icon: <HiCog className="fill-white" />, link: "/alerts" },
-      { title: "Risk Ratings", icon: <HiLogin className="fill-white" />, link: "/profile/docs" },
-    ] },
+  const Menus = [
+    {
+      title: "Borrower Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
+        role === "lender" || role === 'admin' ? { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } : { title: "Agreements", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } ,
+        { title: "Repayment Alerts", icon: <HiCog className="fill-white" />, link: "/alerts" },
+        role === "lender" || role === 'admin' ? { title: "Originations", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } : { title: "Asset Profile", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } ,
+      ]
+    },
     { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },
-    { title: "All Ledgers", icon: <HiTable className="fill-white" />, link: "/ledger"},
+    { title: "All Ledgers", icon: <HiTable className="fill-white" />, link: "/ledger" },
     { title: "Settings", icon: <HiCog className="fill-white" />, link: "/settings" },
     {
       title: "API", icon: <HiKey />, link: "/api",
@@ -62,20 +101,20 @@ const Drawer = () => {
 
               </li>
               {submenus && submenus.map((item) => {
-                  return (
-                      <ul className="space-y-6 lg:space-y-4  border-slate-50 sm:ml-[70px] xl:ml-[5px] space-gap-between m-3">
-                          <li>
-                          <a href={item.link} className="text-white font-medium text-sm xl:ml-[25px]">
-                            <span>
-                              {item.title}
-                            </span>
-                          </a>
-                          </li>
-                      </ul>
-                  )
-                })
+                return (
+                  <ul className="space-y-6 lg:space-y-4  border-slate-50 sm:ml-[70px] xl:ml-[5px] space-gap-between m-3">
+                    <li>
+                      <a href={item.link} className="text-white font-medium text-sm xl:ml-[25px]">
+                        <span>
+                          {item.title}
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                )
+              })
 
-                }
+              }
             </ul>
           )
         })}

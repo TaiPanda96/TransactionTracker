@@ -33,8 +33,15 @@ export default function ProfileComponent() {
                 (data) => data.json()
             ).then(
                 (data) => {
-                    setData(data);
-                    setLoading(false)
+                    if (data && data['error']) {
+                        let { name, message, expiredAt } = data['error'];
+                        if (name === 'TokenExpiredError') {
+                            router.push('/')
+                        }
+                    } else {
+                        setData(data);
+                        setLoading(false)
+                    }
                 }
             ).catch((err) => {
                 setError(err)
@@ -46,7 +53,6 @@ export default function ProfileComponent() {
     if (isLoading) return <div>loading...</div>
     if (error) return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div>
     if (!data) return <div>no data</div>
-
     if (!authorized) { router.push('/') }
 
     return (

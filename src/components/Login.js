@@ -10,44 +10,43 @@ export default function LoginComponent() {
     const [userSession, setSession] = useState('');
     const [userAccessToken, setAccessToken] = useState('');
     const [userRole, setUserRole] = useState('');
-    const [isLoggedIn, setLogin]  = useState(false);
-    const [error, setError]       = useState(null);
+    const [isLoggedIn, setLogin] = useState(false);
+    const [error, setError] = useState(null);
     const [email, setEmail] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         let payload = {
-            username: username, 
+            username: username,
             password: password
         }
-        axios.post(`http://localhost:8080/api/auth/login`, payload, { headers: {'Content-Type': 'application/json'}, withCredentials : true})
-        .then(function (response) {
-            return response
-        }).then((response) => {
-            if (response.data) {
-                setLogin(true);
-                let { _id, accessToken, username, role, email } = response.data;
-                setSession(_id);
-                setAccessToken(accessToken);
-                setUserName(username);
-                setUserRole(role);
-                setEmail(email);
-
-            } else { setLogin(false) }
-        })
-        .catch(function (error) {
-            setError(error)
-        });
+        axios.post(`http://localhost:8080/api/auth/login`, payload, { headers: { 'Content-Type': 'application/json' }, withCredentials: true })
+            .then(function (response) {
+                return response
+            }).then((response) => {
+                if (response.data) {
+                    setLogin(true);
+                    let { _id, accessToken, username, role, email } = response.data;
+                    setSession(_id);
+                    setAccessToken(accessToken);
+                    setUserName(username);
+                    setUserRole(role);
+                    setEmail(email);
+                } else { setLogin(false) }
+            })
+            .catch(function (error) {
+                if (error.message === 'User does not exist') { router.push('/register')} else { setError(error)}
+            });
     }
 
     if (error) { return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div> }
 
-    if (isLoggedIn && userRole ) {
+    if (isLoggedIn && userRole) {
         sessionStorage.setItem("authenticated", true);
         sessionStorage.setItem("userSession", userSession);
-        sessionStorage.setItem("username",username);
-        sessionStorage.setItem("accessToken",userAccessToken);
-        sessionStorage.setItem("role",userRole);
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("accessToken", userAccessToken);
+        sessionStorage.setItem("role", userRole);
         sessionStorage.setItem("email", email);
         router.push("/profile");
     } else {

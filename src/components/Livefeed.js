@@ -17,7 +17,7 @@ export default function Widget() {
         const accessToken = sessionStorage.getItem("accessToken") || '';
         setUsername(sessionStorage.getItem("username")) || '';
         if (accessToken) {
-            fetch(`http://localhost:8080/api/transactions/get-transaction?borrowerId=${user}`,{
+            fetch(`http://localhost:8080/api/transactions/get-transaction`,{
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': accessToken
