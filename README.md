@@ -3,8 +3,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Getting Started
 
 PAGES AVAILABLE in THIS DEMO:
-http://localhost:3000/alerts
-http://localhost:3000/profile
+User Authentication
+Repay Loan 
+Receive Repayment Updates
+Receive Risk Review Notification
+
 
 First, run the development server:
 
