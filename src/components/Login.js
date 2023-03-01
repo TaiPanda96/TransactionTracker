@@ -35,12 +35,14 @@ export default function LoginComponent() {
                 } else { setLogin(false) }
             })
             .catch(function (error) {
-                if (error.message === 'User does not exist') { router.push('/register')} else { setError(error)}
+                if (error.message === 'User does not exist') { router.push('/register')} else { 
+                    setError({
+                        error: error, 
+                        message: error.message
+                    })
+                }
             });
     }
-
-    if (error) { return <div className='items-center'> <ErrorMessageContainer error={error} message={error.message} /> </div> }
-
     if (isLoggedIn && userRole) {
         sessionStorage.setItem("authenticated", true);
         sessionStorage.setItem("userSession", userSession);
@@ -53,11 +55,14 @@ export default function LoginComponent() {
         return (
             <div className="flex w-screen justify-center items-center">
                 <div className="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700 w-screen">
+
                     <form className="space-y-6">
                         <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                             Login
                         </h3>
                         <div>
+                         { error && <ErrorMessageContainer className = "inline" error={error} message={"Invalid username or password provided"} /> }
+                         <br></br>
                             <label className="text-sm items-justify-center text-gray-900 block mb-2 dark:text-gray-300">Username</label>
                             <input className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 value={username}

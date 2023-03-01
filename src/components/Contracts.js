@@ -6,9 +6,10 @@ import axios from 'axios';
 
 import MessageContainer from "./Messages/NoData";
 import SubmittedMessage from "./Messages/Submitted";
-import { HiArrowsExpand, HiArrowCircleUp, AiOutlineCloseCircle } from 'react-icons/hi'
+import { HiArrowCircleUp } from 'react-icons/hi'
 
 import OriginationComponents from "../components/Transactions/Table";
+import CardComponent from "./Cards";
 
 
 const headers = ['contractId', 'email', 'contractType', 'description']
@@ -137,23 +138,15 @@ export default function SmartContractComponent({ }) {
     return (
         <div className="flex-grow border-l border-r border-neutral-800 max-w-4xl sm:ml-[70px] xl:ml-[25px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-2 z-50 bg-indigo-900 border-b border-gray-700">
-                <h6 className="justify-center"> {role === 'lender' ? 'Active Contracts' : 'Covenant Agreements'} </h6>
+                <h6 className="justify-center"> {role === 'lender' ? 'Active Contracts' : 'Loan Agreements'} </h6>
                 <HiArrowCircleUp className="h2 fill-white inline" onClick={() => setOpen(!open)} />
             </div>
             {open && <form className="items-center dark:bg-gray-875">
-                <div className="flex flex-wrap -mx-3">
-                    <div className="flex flex-wrap -mx-3 mb-3">
-                        <div className="w-full px-6">
-                            <label className="block uppercase tracking-wide text-white text-xs font-bold mb-3 ml-5 mt-6" for="grid-password">
-                                Currently Active Smart Contracts for {username}
-                            </label>
-                        </div>
-                    </div>
-                </div>
                 <div className="flex flex-wrap -mx-3 mb-5">
                     <div class="flex justify-center overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="sm:ml-[70px] xl:ml-[55px]">
-                            <table className='border-separate border border-slate-500'>
+                        <div class="sm:ml-[70px]">
+                            <CardComponent/>
+                            {/* <table className='table-fixed'>
                                 <thead class="border-b">
                                     <tr> {headers.map((heading) =>
                                         <th scope="col" className="text-sm justify-end font-large text-white px-8 py-3">
@@ -180,7 +173,7 @@ export default function SmartContractComponent({ }) {
                                         )
                                     })}
                                 </tbody>
-                            </table>
+                            </table> */}
                         </div>
                     </div>
                 </div>
@@ -210,7 +203,7 @@ export default function SmartContractComponent({ }) {
             </div>
 
             {submitted && <MessageContainer message={"Created a New Smart Contract!"} />}
-            {error && <ErrorMessageContainer error={error} message={error.message} />}
+            {error && <ErrorMessageContainer className="flex items-center" error={error} message={error.message} />}
 
             {role === "borrower" && contractOpen && <form className="items-center dark:bg-gray-900">
                 <div class="flex flex-wrap -mx-3 mb-5">
@@ -225,7 +218,7 @@ export default function SmartContractComponent({ }) {
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-3">
                         <label class="block uppercase tracking-wide no-wrap text-white text-xs font-bold mb-2 mt-5" for="grid-first-name">
-                            Interest Amount
+                            Calculated Interest
                         </label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                             value={contractType}
