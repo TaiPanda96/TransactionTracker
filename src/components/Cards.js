@@ -75,7 +75,7 @@ const CardComponent = () => {
                         <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                         <span className="text-sm">
                                 <a className="no-underline hover:underline text-white" href="#">
-                                    Debt Capital Covenant
+                                    Covenants
                                 </a>
                             </span>
                             <p className="text-white text-sm">
