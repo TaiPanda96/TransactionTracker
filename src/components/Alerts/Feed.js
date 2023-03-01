@@ -1,59 +1,94 @@
 // Import Hero Icons
 import moment from 'moment'
-import Image from 'next/image';
-import ImagePlaceHolder from '../../assets/jpmorgan.png'
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/router";
+import ErrorMessageContainer from '../Messages/Error'
+import MessageContainer from '../Messages/NoData';
+import EditIcon from '@mui/icons-material/Edit';
 import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
+
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
 
 const AlertFeedComponent = ({ notificationData = [] }) => {
     return (
-        <div className="max-w-2xl sm:ml-[5px] xl:ml-[2px] border-gray-500 bg-gray">
-            {notificationData.map((post) => {
-            const { text, image, url } = post;
-            return (
-                <div className='h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" title="Woman holding a mug'>
-                    <div className='border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal'>
-                        <div className="mb-8">
-                            <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                                <div class="px-6 py-4">
-                                    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-                                    <p class="text-gray-700 text-base">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                                    </p>
-                                </div>
-                                <div class="px-6 pt-4 pb-2">
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-                                </div>
-                            </div>
-                            <div className="text-gray-900 font-bold text-xl mb-2">
-                                The investment company JP Morgan will help Ukraine attract private investments for the country’s reconstruction.
-                            </div>
-                            <div className="relative h-32 w-32 ...">
-                                <span className=" bg-blue-100 text-red-800 text-xs font-medium inline-flex justify-end px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 ">
-                                    <svg aria-hidden="true" className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
-                                    {moment().subtract(15, 'minutes').minute()} min ago
+        <div className="w-full sm:ml-[5px] border-gray-500 bg-gray mt-3 space-y-8">
+            {Array.isArray(notificationData) && notificationData.length > 0 && notificationData.map((article) => {
+                const { title, upcoming, reviewDate} = article;
+                return (
+                    <div className="flex items-justify-center">
+                        <article className=" w-full overflow-hidden rounded-lg shadow-lg bg-[#334155] mr-3">
+                            <a href="#"></a>
+                            <header className="flex items-center justify-between leading-tight p-2 md:p-5 mt-1 mb-10">
+                                <span className="text-sm">
+                                    <a className="no-underline hover:underline text-white" href="#">
+                                        <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{title}</span>
+                                    </a>
                                 </span>
-                            </div>
-                            <Image src={image ? image : ImagePlaceHolder}></Image>
-                            <br></br>
-                            <p className="text-gray-700 text-base">{text}</p>
-                            <p className="text-gray-700 text-base">
-                                Building the backbone of digital lending innovation.
-                                Building the backbone of digital lending innovation.
-                                Building the backbone of digital lending innovation.
-                            </p>
-                            <br />
-                        </div>
+                                <br></br>
+                                <span className="text-sm inline">
+                                    <a className="no-underline hover:underline text-white" href="#">
+                                    </a>
+                                </span>
+                                <label className="text-white text-sm inline ml-12">
+                                    Due: {moment(reviewDate, 'YYYY-MM-DD').format('YYYY-MM-DD hh:mm')} { upcoming && <PriorityHighIcon className="fill-white"/> }
+                                </label>
+                                
+                            </header>
+
+                            <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                                <a className="flex items-center no-underline hover:underline text-white" href="#">
+                                    <p className="text-sm inline-flex mr-10">
+                                        View
+                                    </p>
+                                </a>
+                            </footer>
+                        </article>
                     </div>
-                </div>
-            )
+                )
             })}
         </div>
     )
 }
 
-export default function LedgerAlertComponent({ notificationData = []}) {
+export default function LedgerAlertComponent() {
+    const [username, setUsername] = useState('');
+    const [role, setRole] = useState('');
+    const [data, setData] = useState(null);
+    const [error,setError] = useState(null);
+    const [isLoading, setLoading] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        setLoading(true);
+        if (!sessionStorage.getItem("authenticated")) { router.push('/') }
+        const accessToken = sessionStorage.getItem("accessToken");
+        setUsername(sessionStorage.getItem("username"))
+        setRole(sessionStorage.getItem("role") || '');
+        fetch('http://localhost:8080/api/notifications/risk-notifications', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            }
+        }).then((data) => data.json()).then(
+            (data) => {
+                if (data && data['error']) {
+                    let { name, message, expiredAt } = data['error'];
+                    if (name === 'TokenExpiredError') {
+                        router.push('/');
+                    }
+                }
+                else {
+                    setData(data);
+                    setLoading(false)
+                }
+            }
+        ).catch((err) => {
+            setError(err)
+            setLoading(false)
+        })
+    }, []);
     return (
         <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[70px] xl:ml-[5px]">
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-black border-b border-gray-700">
@@ -63,10 +98,9 @@ export default function LedgerAlertComponent({ notificationData = []}) {
             </div>
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-black border-b border-gray-700">
                 <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Repayment Alert</span>
-                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Convenant Trigger</span>
-                <span class="bg-purple-100 text-purple-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">Risk Review</span>
+                <span class="bg-purple-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">Risk Review</span>
             </div>
-            <AlertFeedComponent notificationData={notificationData}/>
+            <AlertFeedComponent notificationData={data} />
         </div>
     );
 }
