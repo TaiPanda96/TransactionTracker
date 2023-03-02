@@ -1,6 +1,11 @@
 import moment from "moment";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import TopicIcon from '@mui/icons-material/Topic';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export const Card = ( { notification }) => {
     return ( 
@@ -67,6 +72,13 @@ const CardComponent = () => {
                             </p>
                         </header>
 
+                        <div className="flex items-center justify-center">
+                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                            <TopicIcon className="fill-white"/>
+                            </svg>
+
+                        </div>
+
                         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                             <a className="flex items-center no-underline hover:underline text-white" href="#">
                                 <p className="ml-2 text-sm">
@@ -97,6 +109,13 @@ const CardComponent = () => {
                             { moment().format('YYYY-MM-DD hh:mm')}
                             </p>
                         </header>
+
+                        <div className="flex items-center justify-center">
+                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                            <RequestPageIcon className="fill-white"/>
+                            </svg>
+
+                        </div>
 
                         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                             <a className="flex items-center no-underline hover:underline text-white" href="#">
@@ -130,6 +149,13 @@ const CardComponent = () => {
                             </p>
                         </header>
 
+                        <div className="flex items-center justify-center">
+                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                            <HandshakeIcon className="fill-white"/>
+                            </svg>
+
+                        </div>
+
                         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                             <a className="flex items-center no-underline hover:underline text-white" href="#">
                                 <p className="ml-2 text-sm">
@@ -154,13 +180,20 @@ const CardComponent = () => {
                         <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                         <span className="text-sm">
                                 <a className="no-underline hover:underline text-white" href="#">
-                                    Financial Statements
+                                    Financials
                                 </a>
                             </span>
                             <p className="text-white text-sm">
                             { moment().format('YYYY-MM-DD hh:mm')}
                             </p>
                         </header>
+
+                        <div className="flex items-center justify-center">
+                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                            <AssessmentIcon className="fill-white"/>
+                            </svg>
+
+                        </div>
 
                         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                             <a className="flex items-center no-underline hover:underline text-white" href="#">
@@ -193,6 +226,13 @@ const CardComponent = () => {
                             { moment().format('YYYY-MM-DD hh:mm')}
                             </p>
                         </header>
+
+                        <div className="flex items-center justify-center">
+                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                            <Diversity3Icon className="fill-white"/>
+                            </svg>
+
+                        </div>
 
                         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                             <a className="flex items-center no-underline hover:underline text-white" href="#">

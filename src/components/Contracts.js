@@ -5,14 +5,13 @@ import ErrorMessageContainer from './Messages/Error'
 import axios from 'axios';
 
 import MessageContainer from "./Messages/NoData";
-import SubmittedMessage from "./Messages/Submitted";
 import { HiArrowCircleUp } from 'react-icons/hi'
 
 import OriginationComponents from "../components/Transactions/Table";
 import CardComponent from "./Cards";
 
 
-const headers = ['contractId', 'email', 'contractType', 'description']
+const headers = ['contractId', 'email', 'contractType', 'description'];
 
 export default function SmartContractComponent({ }) {
     const [username, setUsername] = useState('')
@@ -44,6 +43,7 @@ export default function SmartContractComponent({ }) {
     const handleFacilitySubmit = async (e) => {
         e.preventDefault();
         let payload = {
+            amount,
             "assetClass": assetClass, 
             "facilityName": facilityName, 
             "interest": interest,
@@ -52,8 +52,10 @@ export default function SmartContractComponent({ }) {
         const accessToken = sessionStorage.getItem("accessToken");
         setError(null);
         axios.post(`http://localhost:8080/api/auth/add-facility`, payload, {
-            headers: "Content-Type",
-            Authorization: accessToken
+            headers: {
+            "Content-Type": 'application/json',
+            authorization: accessToken
+            }
         })
             .then(function (response) {
                 if (response.data && !response.data['error']) {
@@ -146,34 +148,6 @@ export default function SmartContractComponent({ }) {
                     <div class="flex justify-center overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="sm:ml-[70px]">
                             <CardComponent/>
-                            {/* <table className='table-fixed'>
-                                <thead class="border-b">
-                                    <tr> {headers.map((heading) =>
-                                        <th scope="col" className="text-sm justify-end font-large text-white px-8 py-3">
-                                            {heading}
-                                        </th>)}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array.isArray(data) && data.length > 1 && data.map((row) => {
-                                        return (
-                                            <tr class="dark:bg-gray-900 border-b">
-                                                {headers.map((heading) =>
-                                                    heading === 'triggerOn' && row[heading] ?
-                                                        <td className="text-sm text-white font-light px-4 py-4 whitespace
-                                                ">
-                                                            {row['triggerOn']['description']}
-                                                        </td> :
-                                                        <td className="text-sm text-white font-light px-4 py-4 whitespace
-                                                ">
-                                                            {row[heading]}
-                                                        </td>)
-                                                }
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table> */}
                         </div>
                     </div>
                 </div>
@@ -212,8 +186,8 @@ export default function SmartContractComponent({ }) {
                             Asset
                         </label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                            value={contractType}
-                            onChange={(e) => setContractType(e.target.value)}>
+                            value={assetClass}
+                            onChange={(e) => setAssetClass(e.target.value)}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-3">
@@ -221,8 +195,8 @@ export default function SmartContractComponent({ }) {
                             Calculated Interest
                         </label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                            value={contractType}
-                            onChange={(e) => setContractType(e.target.value)}>
+                            value={interest}
+                            onChange={(e) => setInterest(e.target.value)}>
                         </input>
                     </div>
                     <div class="w-full md:w-1/3 px-6 mb-6 md:mb-3">
@@ -230,8 +204,8 @@ export default function SmartContractComponent({ }) {
                             Principal
                         </label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                            value={contractType}
-                            onChange={(e) => setContractType(e.target.value)}>
+                            value={principal}
+                            onChange={(e) => setPrincipal(e.target.value)}>
                         </input>
                     </div>
 
@@ -240,8 +214,8 @@ export default function SmartContractComponent({ }) {
                             Facility
                         </label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                            value={contractType}
-                            onChange={(e) => setContractType(e.target.value)}>
+                            value={facilityName}
+                            onChange={(e) => setFacilityName(e.target.value)}>
                         </input>
 
                         <div className="w-full px-8 mb-6 md:mb-5 xl:ml-[705px]">
