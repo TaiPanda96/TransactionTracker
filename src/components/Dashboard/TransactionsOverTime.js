@@ -1,28 +1,29 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import ErrorMessageContainer from '../Messages/Error'
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
-  ArcElement,
 } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+
 ChartJS.register(
-    ArcElement,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
 );
 
-const DoughnutChart = ({}) => {
+
+const TransactionsChart = ({}) => {
     const [isLoading, setLoading]= useState(false);
     const [barChartData,setData] = useState([]);
     const [title, setTitle] = useState('');
@@ -30,7 +31,7 @@ const DoughnutChart = ({}) => {
     useEffect(() => {
         setLoading(true);
         const accessToken = sessionStorage.getItem("accessToken");
-        fetch('http://localhost:8080/api/transactions/get-asset-stats', {
+        fetch('http://localhost:8080/api/transactions/get-transaction-stats-by-date', {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': accessToken
@@ -55,19 +56,16 @@ const DoughnutChart = ({}) => {
     }
     if (!isLoading && barChartData) {
         const chartData = {
-            labels: barChartData.map(e => e._id),
-            datasets: [{
-                label: 'Asset Classes',
-                data: barChartData.map(e => e.count),
-                backgroundColor: [
-                  'rgb(173,255,47)',
-                  'rgb(54, 162, 235)',
-                  'rgb(230,230,250)',
-                  'rgb(128,0,0)',
-                  'rgb(0,0,139)',
-                ],
-                hoverOffset: 4
-              }]
+            labels: barChartData.map(e => e.date) || [],
+            datasets: [
+                {
+                    label: 'Requests Hourly',
+                    data: barChartData.map(e => e.count) || [] ,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    yAxisID: 'y',
+                  },
+            ]
         };
     
         const options = {
@@ -78,12 +76,12 @@ const DoughnutChart = ({}) => {
               },
               title: {
                 display: true,
-                text: title || 'Bar Chart',
+                text: title,
               },
             },
         };
         return (
-            <Doughnut options={options} data={chartData} />
+            <Line options={options} data={chartData} />
         )
     } else {
         return ( <div> ...loading data</div>)
@@ -92,4 +90,4 @@ const DoughnutChart = ({}) => {
 
 }
 
-export default DoughnutChart;
+export default TransactionsChart;
