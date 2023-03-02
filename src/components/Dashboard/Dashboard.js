@@ -3,6 +3,7 @@ import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
 import { Card, Divider } from '@mui/material';
 import ChartCard from "./Chart";
 import ComparisonChart from "./Barchart";
+import DoughnutChart from "./Piechart";
 
 const DashboardComponent = () => {
     return (
@@ -24,11 +25,9 @@ const DashboardComponent = () => {
                                     </a>
                                 </span>
                             </header>
-
-                            <article className="w-full h-full">
+                            <div className="flex items-center justify-center">
                                 <ChartCard/>
-
-                            </article>
+                            </div>
                             <div className="flex items-center justify-center">
                                 <svg class="h-10 w-10" viewBox="0 0 24 24">
                                 </svg>
@@ -56,10 +55,9 @@ const DashboardComponent = () => {
                                 </span>
                             </header>
 
-                            <article className="w-full h-full">
+                            <div className="flex items-center justify-center">
                                 <ComparisonChart/>
-
-                            </article>
+                            </div>
                             <div className="flex items-center justify-center">
                                 <svg class="h-10 w-10" viewBox="0 0 24 24">
                                 </svg>
@@ -86,24 +84,9 @@ const DashboardComponent = () => {
                                     </a>
                                 </span>
                             </header>
-
-                            <article className="w-full h-full">
-                                <span className="text-white text-sm flex items-center ml-3">
-                                    Hello hello hello hello hello hello 
-
-                                    Hello hello hello hello hello hello 
-
-                                    Hello hello hello hello hello hello 
-
-                                    Hello hello hello hello hello hello 
-
-                                    Hello hello hello hello hello hello 
-
-                                    Hello hello hello hello hello hello 
-                                    v
-                                </span>
-
-                            </article>
+                            <div className="flex items-center justify-center">
+                                <DoughnutChart/>
+                            </div>
                             <div className="flex items-center justify-center">
                                 <svg class="h-10 w-10" viewBox="0 0 24 24">
                                 </svg>
