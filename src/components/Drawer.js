@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-
+import FindInPageIcon from '@mui/icons-material/FindInPage';
 // Import Hero Icons
 import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin, GrDocumentText } from "react-icons/hi";
 
@@ -48,10 +48,11 @@ const Drawer = () => {
 
   const Menus = [
     { title: "Lending View", icon: <DashboardIcon className="fill-white" />, link:"/dashboard"},
+    { title: "Search", icon: <FindInPageIcon className="fill-white" />, link:"/search"},
     {
       title: "Borrower Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
         role === "lender" || role === 'admin' ? { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } : { title: "Agreements", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } ,
-        { title: "Repayments", icon: <HiCog className="fill-white" />, link: "/alerts" },
+        { title: "Upcoming Compliance", icon: <HiCog className="fill-white" />, link: "/alerts" },
         role === "lender" || role === 'admin' ? { title: "Originations", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } : { title: "Asset Profile", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } ,
 
       ]

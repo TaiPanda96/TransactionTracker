@@ -2,12 +2,7 @@
 import moment from 'moment'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
-import ErrorMessageContainer from '../Messages/Error'
-import MessageContainer from '../Messages/NoData';
-import EditIcon from '@mui/icons-material/Edit';
 import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
-
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 
@@ -15,11 +10,10 @@ const AlertFeedComponent = ({ notificationData = [] }) => {
     return (
         <div className="w-full sm:ml-[5px] border-gray-500 bg-gray mt-3 space-y-8">
             {Array.isArray(notificationData) && notificationData.length > 0 && notificationData.map((article) => {
-                const { title, upcoming, reviewDate} = article;
+                const { title, upcoming, reviewDate } = article;
                 return (
                     <div className="flex items-justify-center">
-                        <article className=" w-full overflow-hidden rounded-lg shadow-lg bg-[#334155] mr-3">
-                            <a href="#"></a>
+                        <article className=" w-full overflow-hidden rounded-lg shadow-lg dark:bg-slate-800 mr-3">
                             <header className="flex items-center justify-between leading-tight p-2 md:p-5 mt-1 mb-10">
                                 <span className="text-sm">
                                     <a className="no-underline hover:underline text-white" href="#">
@@ -32,10 +26,94 @@ const AlertFeedComponent = ({ notificationData = [] }) => {
                                     </a>
                                 </span>
                                 <label className="text-white text-sm inline ml-12">
-                                    Due: {moment(reviewDate, 'YYYY-MM-DD').format('YYYY-MM-DD hh:mm')} { upcoming && <PriorityHighIcon className="fill-white"/> }
+                                    Due: {moment(reviewDate, 'YYYY-MM-DD').format('YYYY-MM-DD hh:mm')} {upcoming && <PriorityHighIcon className="fill-white" />}
                                 </label>
-                                
                             </header>
+                            <div class="grid grid-cols-4 gap-4 ml-5 mb-3 mt-3">
+                                <div>
+                                    <article className="overflow-hidden rounded-lg shadow-lg bg-orange-800 w-5/6">
+                                        <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                                            <span className="text-sm">
+                                                <a className="no-underline hover:underline text-white" href="#">
+                                                    Qtrly Balance Sheet
+                                                </a>
+                                            </span>
+                                        </header>
+                                        <div className="flex items-center justify-center">
+                                        </div>
+                                        <div className="flex items-center justify-center">
+                                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                                            </svg>
+                                        </div>
+                                        <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                                            <a className="flex items-center no-underline hover:underline text-white" href="#">
+                                                <p className="ml-2 text-sm">
+                                                    View
+                                                </p>
+                                            </a>
+                                            <a className="no-underline text-white hover:text-red-dark" href="#">
+                                                <span className="hidden">Like</span>
+                                                <i className="fa fa-heart"></i>
+                                            </a>
+                                        </footer>
+                                    </article>
+                                </div>
+                                <div>
+                                    <article className="overflow-hidden rounded-lg shadow-lg bg-blue-800 w-5/6">
+                                        <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                                            <span className="text-sm">
+                                                <a className="no-underline hover:underline text-white" href="#">
+                                                    Qtrly Income Statement
+                                                </a>
+                                            </span>
+                                        </header>
+                                        
+                                        <div className="flex items-center justify-center">
+                                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                                            </svg>
+                                        </div>
+                                        <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                                            <a className="flex items-center no-underline hover:underline text-white" href="#">
+                                                <p className="ml-2 text-sm">
+                                                    View
+                                                </p>
+                                            </a>
+                                            <a className="no-underline text-white hover:text-red-dark" href="#">
+                                                <span className="hidden">Like</span>
+                                                <i className="fa fa-heart"></i>
+                                            </a>
+                                        </footer>
+                                    </article>
+                                </div>
+                                <div>
+                                <article className="overflow-hidden rounded-lg shadow-lg bg-gray-700 w-5/6">
+                                        <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                                            <span className="text-sm">
+                                                <a className="no-underline hover:underline text-white" href="#">
+                                                    eSign: Loan Agreement
+                                                </a>
+                                            </span>
+                                        </header>
+                                        <div className="flex items-center justify-center">
+                                        </div>
+                                        <div className="flex items-center justify-center">
+                                            <svg class="h-10 w-10" viewBox="0 0 24 24">
+                                            </svg>
+                                        </div>
+                                        <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                                            <a className="flex items-center no-underline hover:underline text-white" href="#">
+                                                <p className="ml-2 text-sm">
+                                                    View
+                                                </p>
+                                            </a>
+                                            <a className="no-underline text-white hover:text-red-dark" href="#">
+                                                <span className="hidden">Like</span>
+                                                <i className="fa fa-heart"></i>
+                                            </a>
+                                        </footer>
+                                    </article>
+                                </div>
+                            </div>
 
                             <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                                 <a className="flex items-center no-underline hover:underline text-white" href="#">
@@ -56,7 +134,7 @@ export default function LedgerAlertComponent() {
     const [username, setUsername] = useState('');
     const [role, setRole] = useState('');
     const [data, setData] = useState(null);
-    const [error,setError] = useState(null);
+    const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(false);
     const router = useRouter();
 

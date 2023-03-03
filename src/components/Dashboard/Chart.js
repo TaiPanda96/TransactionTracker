@@ -19,37 +19,65 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart',
-    },
-  },
-};
+export const InterestChartCard = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [barChartData, setData] = useState([]);
+  const [title, setTitle] = useState('');
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    setLoading(true);
+    const accessToken = sessionStorage.getItem("accessToken");
+    fetch('http://localhost:8080/api/transactions/get-transaction-interest-stats', {
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': accessToken
+      }
+    }).then((data) => data.json()).then((response) => {
+      if (response) {
+        setData(response.chartData)
+        setTitle(response.chartTitle)
+        setLoading(false);
+      } else {
+        setLoading(false);
+        setError({ error: "Empty response from API", message: "Oops, looks like no data returned" });
+      }
+    }).catch((error) => {
+      setLoading(false);
+      setError(error)
+    })
+  }, []);
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  if (error) {
+    return (<ErrorMessageContainer error={error} message={error.message} />)
+  }
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map((elem,idx) => idx),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map((elem,idx) => idx),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
-export default function ChartChard() {
-  return <Bar options={options} data={data} />;
+  if (!isLoading && barChartData) {
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: title,
+        },
+      },
+    };
+    const chartData = {
+      labels: barChartData.map(e => e.assetClass),
+      datasets: [{
+          label: 'Avg Interest by Asset Class',
+          data: barChartData.map(e => e.avgInterest),
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      }]
+    };
+    return (
+      <Bar options={options} data={chartData} />
+    )
+  } else {
+    return (<div className='text-white'> ...loading data</div>)
+  }
 }
+
+export default InterestChartCard;

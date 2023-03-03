@@ -82,7 +82,7 @@ const ComparisonChart = ({}) => {
             <Bar options={options} data={chartData} />
         )
     } else {
-        return ( <div> ...loading data</div>)
+      return ( <div className='text-white'> ...loading data</div>)
     }
 
 
