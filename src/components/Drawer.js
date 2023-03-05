@@ -9,10 +9,10 @@ import { HiHome, HiUser, HiTable, HiKey, HiCog, HiBell, HiLogin, GrDocumentText 
 
 const Drawer = () => {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
   const [open, setOpen] = useState(false);
-  const [error,setError] = useState(null);
   const [role, setUserRole] = useState('');
+  const [authorized, setAuthorized] = useState(false);
+  const [error,setError] = useState(null);
   const [user, setUser] = useState('');
   const [isLoading,setLoading] = useState(false);
   useEffect(() => {
@@ -48,13 +48,11 @@ const Drawer = () => {
 
   const Menus = [
     { title: "Lending View", icon: <DashboardIcon className="fill-white" />, link:"/dashboard"},
-    { title: "Search", icon: <FindInPageIcon className="fill-white" />, link:"/search"},
+    { title: "Search Borrowers", icon: <FindInPageIcon className="fill-white" />, link:"/search"},
     {
-      title: "Borrower Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
-        role === "lender" || role === 'admin' ? { title: "Contracts", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } : { title: "Agreements", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } ,
+      title: "Profile", icon: <HiUser className="fill-white" />, link: "/profile", submenus: [
+        { title: "Agreements", icon: <HiLogin className="fill-white" />, link: "/profile/contracts" } ,
         { title: "Upcoming Compliance", icon: <HiCog className="fill-white" />, link: "/alerts" },
-        role === "lender" || role === 'admin' ? { title: "Originations", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } : { title: "Asset Profile", icon: <HiLogin className="fill-white" />, link: "/profile/docs" } ,
-
       ]
     },
     { title: "Alerts", icon: <HiBell className="fill-white" />, link: "/alerts", },
