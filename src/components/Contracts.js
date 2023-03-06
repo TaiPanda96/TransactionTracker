@@ -170,7 +170,7 @@ export default function SmartContractComponent({ }) {
 
             <br></br>
             <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
-                <h6 className="justify-center">{role === "lender" ? "Add Smart Contract" : "Repay My Loan"}</h6>
+                <h6 className="justify-center">{role === "lender" ? "Add Smart Contract" : "Create Transaction"}</h6>
                 <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
                     <EditIcon className="h2 fill-white" onClick={() => setEditContractOpen(!contractOpen)} />
                 </div>

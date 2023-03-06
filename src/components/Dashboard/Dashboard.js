@@ -104,6 +104,7 @@ const DashboardComponent = () => {
                                 </a>
                             </footer>
                         </article>
+                        
                     </div>
                 </div>
             </div>
@@ -137,33 +138,6 @@ const DashboardComponent = () => {
                         </footer>
 
                     </article>
-                    <article className="overflow-hidden rounded-lg shadow-lg bg-gray-700 w-3/6">
-                            <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-                                <span className="text-sm">
-                                    <a className="no-underline hover:underline text-white" href="#">
-                                        Asset Distribution
-                                    </a>
-                                </span>
-                            </header>
-                            <div className="flex items-center justify-center">
-                                <TransactionsChart />
-                            </div>
-                            <div className="flex items-center justify-center">
-                                <svg class="h-10 w-10" viewBox="0 0 24 24">
-                                </svg>
-                            </div>
-                            <footer className="flex items-center justify-between leading-none p-2 md:p-4">
-                                <a className="flex items-center no-underline hover:underline text-white" href="#">
-                                    <p className="ml-2 text-sm">
-                                        View
-                                    </p>
-                                </a>
-                                <a className="no-underline text-white hover:text-red-dark" href="#">
-                                    <span className="hidden">Like</span>
-                                    <i className="fa fa-heart"></i>
-                                </a>
-                            </footer>
-                        </article>
                     
                 </div>
             </div>

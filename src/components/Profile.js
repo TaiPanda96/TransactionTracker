@@ -64,14 +64,6 @@ export default function ProfileComponent() {
                 </div>
             </div>
             <br></br>
-
-            <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-indigo-900 border-b border-gray-700">
-                <h6 className="justify-center">Borrower</h6>
-                <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
-                    <EditIcon className="h6 fill-white" />
-                </div>
-            </div>
-            <br></br>
             <form className="items-center dark:bg-gray-900">
                 <div class="flex flex-wrap -mx-3 mb-5">
                     <div class="w-full md:w-1/2 px-6 mb-6 md:mb-0">
@@ -85,7 +77,7 @@ export default function ProfileComponent() {
                         <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2 mt-5" for="grid-last-name">
                             Profile Type
                         </label>
-                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={role}>
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value="lender">
                         </input>
                     </div>
                 </div>
