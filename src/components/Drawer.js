@@ -66,7 +66,6 @@ const Drawer = () => {
       ]
     }
   ]
-
   return (
     <div className="max-w-2xl sm:ml-[5px] xl:ml-[2px] border-gray-500 bg-gray">
       <div className={`${open ? "w-80" : "w-20"} bg-indigo-900 h-screen p-5  pt-8 relative duration-300`}>

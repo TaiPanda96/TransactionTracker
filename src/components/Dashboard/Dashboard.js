@@ -109,6 +109,8 @@ const DashboardComponent = () => {
                 </div>
             </div>
             <div className="w-full overflow-hidden rounded-lg shadow-lg dark:bg-gray-800 mb-4">
+
+                <h3 className="text-white font-semi-bold mt-8 ml-5 mb-5">Asset View</h3>
                 <div className="flex flex-wrap space-x-11 -mx-1 lg:-mx-4 md:w-1/2 lg:my-4 lg:px-4 lg:w-5/6 ">
                     <article className="overflow-hidden rounded-lg shadow-lg bg-gray-700 ml-11">
                         <a href="#">
