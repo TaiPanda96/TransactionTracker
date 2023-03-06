@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import BorrowerSidebar from '../../components/Borrower/BorrowerDrawer';
 import BorrowerProfileComponent from '@/components/Borrower/BorrowerProfile';
 
+import BorrowerWidget  from "@/components/Borrower/BorrowerWidget"
+
 const ProfileDetails = () => {
     const router = useRouter();
     const [borrower, setBorrowerProfile] = useState({});
@@ -22,7 +24,8 @@ const ProfileDetails = () => {
         <>
         <div className="bg-neutral-900 w-full h-full flex max-w-[2400px] mx-auto">
           <BorrowerSidebar/>
-          <BorrowerProfileComponent/>
+          <BorrowerProfileComponent borrowerObj={borrower}/>
+          <BorrowerWidget/>
         </div>
       </>
     )
